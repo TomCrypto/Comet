@@ -65,7 +65,7 @@ module Comet
       def formatted_headers
         @source.headers.map do |header|
           "-I#{header}"
-        end.join
+        end.join ' '
       end
     end
   end
