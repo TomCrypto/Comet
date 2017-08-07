@@ -6,7 +6,9 @@ module Comet
           @@cache[[file, include_paths]]
         end
 
-        def search(file, include_paths)
+        def search(file, include_paths, visited)
+          return visited[file] if visited.key? file
+
           includes = []
 
           File.read(file).scan(PATTERN) do
@@ -14,17 +16,17 @@ module Comet
             includes << find_included_file(header, include_paths)
           end
 
+          visited[file] = []
           includes.compact.uniq.dup.each do |included|
-            includes.concat search(included, include_paths)
+            includes.concat search(included, include_paths, visited)
           end
-
-          includes.compact.uniq
+          visited[file] = includes.compact.uniq
         end
 
         private
 
         @@cache = Hash.new do |h, k|
-          h[k] = IncludeWalker.search(*k)
+          h[k] = IncludeWalker.search(*k, {})
         end
 
         PATTERN = /^\s*#\s*include\s*(?:(?:<([^>]+)>)|(?:"([^"]+)"))\s*$/m
