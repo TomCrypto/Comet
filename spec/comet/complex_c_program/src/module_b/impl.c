@@ -1,0 +1,1 @@
+#include "module_b/impl.h"

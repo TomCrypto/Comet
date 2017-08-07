@@ -1,0 +1,14 @@
+require: rubocop-rspec
+
+AllCops:
+  Exclude:
+    - '**/*/comet.rb'
+
+Style/Documentation:
+  Enabled: false
+
+Style/SpecialGlobalVars:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false

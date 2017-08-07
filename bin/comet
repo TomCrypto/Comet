@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require 'comet'
+require 'slop'
+
+# HACK: until https://github.com/leejarvis/slop/pull/214 is fixed
+ARGV.unshift '-f', 'comet.rb' if !ARGV.empty? && ARGV[0] == '--'
+
+options = Slop.parse suppress_errors: true do |opts|
+  opts.banner = 'Usage: comet [-f PATH] [-s] [make arguments...]'
+  opts.string '-f', 'filename of build file', default: 'comet.rb'
+  opts.bool '-V', 'show all makefile output', default: false
+  opts.bool '-s', 'show produced makefile', default: false
+  opts.on '--version', 'print the tool version' do
+    puts "comet v#{Comet::VERSION}"
+    exit
+  end
+  opts.on '-h', '--help', 'show this help message' do
+    puts opts
+    exit
+  end
+end
+
+generator = Comet::Generator.new(options[:f])
+
+if options[:s]
+  puts generator.makefile.contents
+else
+  generator.makefile.execute options.arguments, verbose: options[:V]
+end
