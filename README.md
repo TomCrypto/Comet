@@ -242,7 +242,7 @@ end
 #### Examples
 
 ```ruby
-source language: :c do
+source language: :c, headers: ['include'] do
   import 'src/main.c'
   option :ffreestanding
   define :NDEBUG
