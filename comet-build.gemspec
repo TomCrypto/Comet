@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.files         = `git ls-files`.split($\)
   gem.executables   = ['comet']
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = 'comet'
+  gem.name          = 'comet-build'
   gem.require_paths = ['lib']
   gem.version       = Comet::VERSION
 

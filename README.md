@@ -18,7 +18,7 @@ Functionally, Comet is a Makefile generator which accepts a domain-specific lang
 Installation
 ------------
 
-    gem install comet
+    gem install comet-build
 
 Comet wraps Make, consuming only two command line arguments and forwarding the rest.
 
