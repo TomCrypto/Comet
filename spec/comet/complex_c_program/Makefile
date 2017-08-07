@@ -9,49 +9,49 @@ COMET_RM ?= rm
 .PHONY: all
 all: test
 .PHONY: test
-test: .comet/8ef077f0cd5aaff49b65.phony .comet/b318cee1620386b56865.phony
+test: .comet/41f8b3e8804fea68ec6b.phony .comet/b5c19fd070359b597edd.phony
 .PHONY: test/linux_x64
-test/linux_x64: .comet/b318cee1620386b56865.phony
+test/linux_x64: .comet/b5c19fd070359b597edd.phony
 .PHONY: test/linux_x86
-test/linux_x86: .comet/8ef077f0cd5aaff49b65.phony
+test/linux_x86: .comet/41f8b3e8804fea68ec6b.phony
 .PHONY: .comet
 .comet:
 	if [ ! -d "$@" ] || [ ! -d "`readlink .comet`" ]; then $(COMET_LN) -sf `mktemp -d` $@; fi
-.PHONY: .comet/8ef077f0cd5aaff49b65.phony
-.comet/8ef077f0cd5aaff49b65.phony: .comet/6e9e95f81d33c9c56999.elf .comet/6801b5b5df17e4f2ddd2.bin
-	$(COMET_CP) .comet/6e9e95f81d33c9c56999.elf bin/test_linux_x86.elf
-	$(COMET_CP) .comet/6801b5b5df17e4f2ddd2.bin bin/test_linux_x64.bin
-	$(COMET_CP) .comet/6e9e95f81d33c9c56999.map bin/test_linux_x86.map
-.comet/6e9e95f81d33c9c56999.elf: .comet/72011646c080021a2ca1.s  | .comet
-	$(COMET_LD) --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake   -Wl,-Map=.comet/6e9e95f81d33c9c56999.map -o $@ $^ 
-.comet/72011646c080021a2ca1.s: .comet/39a50271e7c848a47a93.ll | .comet
+.PHONY: .comet/41f8b3e8804fea68ec6b.phony
+.comet/41f8b3e8804fea68ec6b.phony: .comet/58e4769019097316a2f4.elf .comet/3bc14a6c241d158c30cd.bin
+	$(COMET_CP) .comet/58e4769019097316a2f4.elf bin/test_linux_x86.elf
+	$(COMET_CP) .comet/3bc14a6c241d158c30cd.bin bin/test_linux_x64.bin
+	$(COMET_CP) .comet/58e4769019097316a2f4.map bin/test_linux_x86.map
+.comet/58e4769019097316a2f4.elf: .comet/55978226b396c7da38ec.s  | .comet
+	$(COMET_LD) --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake   -Wl,-Map=.comet/58e4769019097316a2f4.map -o $@ $^ 
+.comet/55978226b396c7da38ec.s: .comet/45b8ac54c1523683a185.ll | .comet
 	$(COMET_OPT) -S -Ofast --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake -o $@ $<
-.comet/39a50271e7c848a47a93.ll: .comet/4d2501c8d4d8a11d7131.ll .comet/4ea3c3da23201dcbd4a2.ll .comet/00757f6e0a0b4ff24514.ll | .comet
+.comet/45b8ac54c1523683a185.ll: .comet/066c9d603b1250716309.ll .comet/1eddb1ee8e3f2bd08fa2.ll .comet/e49cdc7c30bb85a26a1e.ll | .comet
 	$(COMET_LINK) -S -o $@ $^
-.comet/4d2501c8d4d8a11d7131.ll: src/module_a/impl.c src/module_a/impl.h src/common.h include/public_api.h | .comet
-	$(COMET_CC) -x c --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc-Iinclude -DFOO=BAR -std=c89 -o $@ -c $<
-.comet/4ea3c3da23201dcbd4a2.ll: src/module_b/impl.c src/module_b/impl.h src/common.h include/public_api.h | .comet
-	$(COMET_CC) -x c --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc-Iinclude -DFOO=BAZ -std=c89 -o $@ -c $<
-.comet/00757f6e0a0b4ff24514.ll: src/main.c src/common.h src/library.h src/module_a/impl.h src/module_b/impl.h include/public_api.h | .comet
-	$(COMET_CC) -x c --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc-Iinclude -std=c89 -o $@ -c $<
-.comet/6801b5b5df17e4f2ddd2.bin: .comet/6e9e95f81d33c9c56999.elf | .comet
+.comet/066c9d603b1250716309.ll: src/module_a/impl.c src/module_a/impl.h src/common.h include/public_api.h | .comet
+	$(COMET_CC) -x c --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc -Iinclude -DFOO=BAR -std=c89 -o $@ -c $<
+.comet/1eddb1ee8e3f2bd08fa2.ll: src/module_b/impl.c src/module_b/impl.h src/common.h include/public_api.h | .comet
+	$(COMET_CC) -x c --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc -Iinclude -DFOO=BAZ -std=c89 -o $@ -c $<
+.comet/e49cdc7c30bb85a26a1e.ll: src/main.c src/common.h src/library.h src/module_a/impl.h src/module_b/impl.h include/public_api.h | .comet
+	$(COMET_CC) -x c --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc -Iinclude -std=c89 -o $@ -c $<
+.comet/3bc14a6c241d158c30cd.bin: .comet/58e4769019097316a2f4.elf | .comet
 	(command -v x86-unknown-linux-gnu-$(COMET_OBJCOPY) > /dev/null) && x86-unknown-linux-gnu-$(COMET_OBJCOPY) -O binary $< $@ || $(COMET_OBJCOPY) -O binary $< $@
-.PHONY: .comet/b318cee1620386b56865.phony
-.comet/b318cee1620386b56865.phony: .comet/719f853cbed7abc8fd85.elf
-	$(COMET_CP) .comet/719f853cbed7abc8fd85.elf bin/test_linux_x64.elf
-	$(COMET_CP) .comet/719f853cbed7abc8fd85.map bin/test_linux_x64.map
-.comet/719f853cbed7abc8fd85.elf: .comet/3b044e603b145f4fbc04.s  | .comet
-	$(COMET_LD) --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake   -Wl,-Map=.comet/719f853cbed7abc8fd85.map -o $@ $^ 
-.comet/3b044e603b145f4fbc04.s: .comet/e10c49538753263f5465.ll | .comet
+.PHONY: .comet/b5c19fd070359b597edd.phony
+.comet/b5c19fd070359b597edd.phony: .comet/239aef468b7c74e8eb07.elf
+	$(COMET_CP) .comet/239aef468b7c74e8eb07.elf bin/test_linux_x64.elf
+	$(COMET_CP) .comet/239aef468b7c74e8eb07.map bin/test_linux_x64.map
+.comet/239aef468b7c74e8eb07.elf: .comet/9eb2d2641e6518828e34.s  | .comet
+	$(COMET_LD) --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake   -Wl,-Map=.comet/239aef468b7c74e8eb07.map -o $@ $^ 
+.comet/9eb2d2641e6518828e34.s: .comet/c743dd82509170cb5828.ll | .comet
 	$(COMET_OPT) -S -O3 --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake -o $@ $<
-.comet/e10c49538753263f5465.ll: .comet/8a80b3d251d0ac59da27.ll .comet/416611e4ce7c48c0779d.ll .comet/7f0db3e959b1e7eb61e9.ll | .comet
+.comet/c743dd82509170cb5828.ll: .comet/9e5dea7cf944c74e7a6c.ll .comet/e054566ad272c0a69ba6.ll .comet/b299d49b84f938ace557.ll | .comet
 	$(COMET_LINK) -S -o $@ $^
-.comet/8a80b3d251d0ac59da27.ll: src/module_a/impl.c src/module_a/impl.h src/common.h include/public_api.h | .comet
-	$(COMET_CC) -x c --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc-Iinclude -DFOO=BAR -std=c89 -o $@ -c $<
-.comet/416611e4ce7c48c0779d.ll: src/module_b/impl.c src/module_b/impl.h src/common.h include/public_api.h | .comet
-	$(COMET_CC) -x c --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc-Iinclude -DFOO=BAZ -std=c89 -o $@ -c $<
-.comet/7f0db3e959b1e7eb61e9.ll: src/main.c src/common.h src/library.h src/module_a/impl.h src/module_b/impl.h include/public_api.h | .comet
-	$(COMET_CC) -x c --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc-Iinclude -std=c89 -o $@ -c $<
+.comet/9e5dea7cf944c74e7a6c.ll: src/module_a/impl.c src/module_a/impl.h src/common.h include/public_api.h | .comet
+	$(COMET_CC) -x c --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc -Iinclude -DFOO=BAR -std=c89 -o $@ -c $<
+.comet/e054566ad272c0a69ba6.ll: src/module_b/impl.c src/module_b/impl.h src/common.h include/public_api.h | .comet
+	$(COMET_CC) -x c --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc -Iinclude -DFOO=BAZ -std=c89 -o $@ -c $<
+.comet/b299d49b84f938ace557.ll: src/main.c src/common.h src/library.h src/module_a/impl.h src/module_b/impl.h include/public_api.h | .comet
+	$(COMET_CC) -x c --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -Isrc -Iinclude -std=c89 -o $@ -c $<
 .PHONY: clean
 clean:
 	$(COMET_RM) -rf .comet
