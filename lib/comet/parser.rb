@@ -12,6 +12,7 @@ module Comet
       if hardware_defined? name, targets
         raise "hardware `#{name}' redefined for `#{targets}'"
       end
+      raise "`#{name}' already used by software" if @software.key? name
       @hardware[name].push DSL::Hardware.new(name, targets: targets, &block)
     end
 
