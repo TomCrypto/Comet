@@ -13,6 +13,7 @@ module Comet
           triple: @linker.triple,
           isa: @linker.isa,
           cpu: @linker.cpu,
+          language: @source.language,
           flags: Set[formatted_flags],
           headers: formatted_headers,
           dependencies: Set[dependencies]
@@ -52,7 +53,7 @@ module Comet
         [
           '$(COMET_CC)',
           '-x',
-          'c',
+          @source.language == :c ? 'c' : 'c++',
           "--target=#{@linker.triple}",
           "-march=#{@linker.isa}",
           "-mcpu=#{@linker.cpu}",

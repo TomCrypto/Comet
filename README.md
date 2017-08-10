@@ -13,7 +13,7 @@ Comet is a no-nonsense build tool primarily oriented towards embedded or cross-c
 
 Functionally, Comet is a Makefile generator which accepts a domain-specific language from a build file, produces a Makefile, and executes it, placing all intermediate files inside a hidden `.comet` temporary directory. The only thing you need to do as a developer is write your `comet.rb` build file and add `.comet` to your gitignore file.
 
-**WARNING**: this software is still in the testing phase, use in production at your own risk. Improvement suggestions and pull requests are welcome and appreciated. Currently only the C language is supported (C++ will be added shortly) and the tool probably only works on Linux as of now, but just a couple parts of the code are OS-dependent.
+**WARNING**: this software is still in the testing phase, use in production at your own risk. Improvement suggestions and pull requests are welcome and appreciated. Currently only C and C++ language support is implemented through Clang and the tool probably only works on Linux as of now, but just a couple parts of the code are OS-dependent.
 
 Installation
 ------------
@@ -43,6 +43,7 @@ Language support for compiling source files is shown below. Adding support for a
 | -------- | ----------- | ------------------ |
 | *Native* | `:native`   | None (link-only)   |
 | C        | `:c`        | Clang              |
+| C++      | `:cpp`      | Clang              |
 
 Native languages are those for which the source code is either already LLVM bitcode, or is already in a lower representation than LLVM IR, such as assembly. These will be passed directly to the linker after compiled LLVM bitcode, therefore:
 
@@ -53,7 +54,6 @@ Native languages are those for which the source code is either already LLVM bitc
 Planned features
 ----------------
 
- - C++ language support
  - Windows support
  - Clarification of linker parameters (triple, isa, cpu)
  - Ability to import other build files recursively
@@ -225,14 +225,14 @@ source language: :native do
 end
 ```
 
-### C Source Directive
+### C/C++ Source Directive
 
-C source directives take an array of header include paths as a parameter, and accept source file import directives, option directives (to pass in compiler flags) and define directives (to pass in preprocessor macros).
+C/C++ source directives take an array of header include paths as a parameter, and accept source file import directives, option directives (to pass in compiler flags) and define directives (to pass in preprocessor macros).
 
 #### Grammar
 
 ```ruby
-source language: :c, headers: ['dir1', 'dir2', ...] do
+source language: :c|:cpp, headers: ['dir1', 'dir2', ...] do
   # import directives
   # option directives
   # define directives
@@ -248,6 +248,12 @@ source language: :c, headers: ['include'] do
   define :NDEBUG
   define :_POSIX_C_SOURCE => '200809L'
 end
+```
+
+You can unset a previously defined option by using the special symbol `:remove` as a value. For instance:
+
+```ruby
+option :Werror => :remove
 ```
 
 Advanced Usage
@@ -296,6 +302,10 @@ hardware 'hal', targets: :device2 do
   # ...
 end
 ```
+
+### Overriding external programs
+
+Any external tool called by a Comet-generated Makefile can be overridden through environment variables of the form `COMET_TOOLNAME`. For instance, `cp` is invoked through `COMET_CP`, `clang` is invoked through `COMET_CLANG`, and so on. You can see the list of tools by inspecting the generated Makefile with `comet -s`, they will be at the top.
 
 ### Some helper Ruby methods
 

@@ -8,22 +8,22 @@ COMET_RM ?= rm
 .PHONY: all
 all: main
 .PHONY: main
-main: .comet/fb5bd0bc5bbbcfb8d75d.phony
+main: .comet/116dd1901deffe3fa447.phony
 .PHONY: main/linux_x64
-main/linux_x64: .comet/fb5bd0bc5bbbcfb8d75d.phony
+main/linux_x64: .comet/116dd1901deffe3fa447.phony
 .PHONY: .comet
 .comet:
 	if [ ! -d "$@" ] || [ ! -d "`readlink .comet`" ]; then $(COMET_LN) -sf `mktemp -d` $@; fi
-.PHONY: .comet/fb5bd0bc5bbbcfb8d75d.phony
-.comet/fb5bd0bc5bbbcfb8d75d.phony: .comet/6a16a16dcf71bbd81420.elf
-	$(COMET_CP) .comet/6a16a16dcf71bbd81420.elf main
-.comet/6a16a16dcf71bbd81420.elf: .comet/6da374969db200830aba.s  | .comet
-	$(COMET_LD) --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake   -Wl,-Map=.comet/6a16a16dcf71bbd81420.map -o $@ $^ 
-.comet/6da374969db200830aba.s: .comet/d00df735d73ec90af321.ll | .comet
+.PHONY: .comet/116dd1901deffe3fa447.phony
+.comet/116dd1901deffe3fa447.phony: .comet/457234dc02f9dfb5542f.elf
+	$(COMET_CP) .comet/457234dc02f9dfb5542f.elf main
+.comet/457234dc02f9dfb5542f.elf: .comet/ccb40296b80a66398214.s  | .comet
+	$(COMET_LD) --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake   -Wl,-Map=.comet/457234dc02f9dfb5542f.map -o $@ $^ 
+.comet/ccb40296b80a66398214.s: .comet/93cf4b5489860f6a6154.ll | .comet
 	$(COMET_OPT) -S -O1 --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake -o $@ $<
-.comet/d00df735d73ec90af321.ll: .comet/15a47430b29cc4417a92.ll | .comet
+.comet/93cf4b5489860f6a6154.ll: .comet/02c92d481320c450e153.ll | .comet
 	$(COMET_LINK) -S -o $@ $^
-.comet/15a47430b29cc4417a92.ll: main.c ./stuff.h | .comet
+.comet/02c92d481320c450e153.ll: main.c ./stuff.h | .comet
 	$(COMET_CC) -x c --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake -S -flto -I.  -o $@ -c $<
 .PHONY: clean
 clean:

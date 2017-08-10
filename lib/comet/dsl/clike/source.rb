@@ -1,6 +1,6 @@
 module Comet
   module DSL
-    module C
+    module CLike
       class Source
         include Comet::DSL::Helpers
         alias inject instance_exec
@@ -17,7 +17,8 @@ module Comet
           @options.add('D', *args, **kwargs)
         end
 
-        def initialize(headers:, &block)
+        def initialize(language:, headers:, &block)
+          @language = language
           @headers = headers
           @imports = []
           @options = Comet::DSL::Options.new
@@ -26,16 +27,17 @@ module Comet
         end
 
         def to_s
-          'C source'
+          if language == :c
+            'C source'
+          elsif language == :cpp
+            'C++ source'
+          end
         end
 
+        attr_reader :language
         attr_reader :headers
         attr_reader :imports
         attr_reader :options
-
-        def language
-          :c
-        end
 
         def native?
           false

@@ -4,15 +4,21 @@ module Comet
       class << self
         def create(language:, **kwargs, &block)
           raise "unknown language #{language}" unless valid? language
-          LANGUAGES[language].new(**kwargs, &block) # pass extra args
+          LANGUAGES[language].call(**kwargs, &block)
         end
 
         private
 
         LANGUAGES = {
-          c: C::Source,
-          cpp: CPP::Source,
-          native: Native::Source
+          c: proc do |**kwargs, &block|
+            CLike::Source.new(language: :c, **kwargs, &block)
+          end,
+          cpp: proc do |**kwargs, &block|
+            CLike::Source.new(language: :cpp, **kwargs, &block)
+          end,
+          native: proc do |**kwargs, &block|
+            Native::Source.new(**kwargs, &block)
+          end
         }.freeze
 
         def valid?(language)
