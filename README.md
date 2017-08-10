@@ -305,7 +305,7 @@ end
 
 ### Overriding external programs
 
-Any external tool called by a Comet-generated Makefile can be overridden through environment variables of the form `COMET_TOOLNAME`. For instance, `cp` is invoked through `COMET_CP`, `clang` is invoked through `COMET_CLANG`, and so on. You can see the list of tools by inspecting the generated Makefile with `comet -s`, they will be at the top.
+Any external tool called by a Comet-generated Makefile can be overridden through environment variables of the form `COMET_TOOLNAME`. For instance, `cp` is invoked through `COMET_CP`, `clang` is invoked as a compiler through `COMET_CC`, and as a linker through `COMET_LD`, and so on. You can see the list of tools by inspecting the generated Makefile with `comet -s`, they will be at the top.
 
 ### Some helper Ruby methods
 
