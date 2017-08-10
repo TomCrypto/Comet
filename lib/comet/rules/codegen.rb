@@ -8,11 +8,7 @@ module Comet
 
       def target
         @target ||= Comet::Makefile.fingerprint Hash[
-          command: clang_link_command,
-          target: @bitcode.target,
-          triple: @linker.triple,
-          isa: @linker.isa,
-          cpu: @linker.cpu,
+          command: llc_command,
           opt: @linker.opt
         ], extension: :s
       end
@@ -29,22 +25,17 @@ module Comet
       end
 
       def commands
-        { COMET_OPT: 'clang' }
+        { COMET_OPT: 'llc' }
       end
 
       private
 
       def llvm_codegen
-        [
-          *clang_link_command,
-          "--target=#{@linker.triple}",
-          "-march=#{@linker.isa}",
-          "-mcpu=#{@linker.cpu}"
-        ].join ' '
+        llc_command.join ' '
       end
 
-      def clang_link_command
-        ['$(COMET_OPT)', '-S', "-O#{@linker.opt}"]
+      def llc_command
+        ['$(COMET_OPT)', '-filetype=asm', "-O#{@linker.opt}"]
       end
     end
   end
