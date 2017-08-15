@@ -8,7 +8,8 @@ module Comet
     end
 
     def contents
-      (commands + @rules.map(&:contents)).flatten.join "\n"
+      output = (commands + @rules.map(&:contents))
+      output.flatten.map(&:rstrip).join("\n") + "\n"
     end
 
     def execute(*args)
