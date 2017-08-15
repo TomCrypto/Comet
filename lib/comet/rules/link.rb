@@ -26,9 +26,11 @@ module Comet
       end
 
       def contents
+        obj_dependencies = "#{@dependency.target} #{@native_sources.join ' '}"
+
         [
-          "#{target}: #{@dependency.target} #{@native_sources.join ' '} #{@linker.script_ || ''} | #{Comet::TMPDIR}",
-          "\t#{clang_link} #{formatted_script} #{formatted_flags.join ' '} -Wl,-Map=#{map_file} -o $@ $^ #{formatted_libraries}"
+          "#{target}: #{obj_dependencies} #{@linker.script_ || ''} | #{Comet::TMPDIR}",
+          "\t#{clang_link} #{formatted_script} #{formatted_flags.join ' '} -Wl,-Map=#{map_file} -o $@ #{obj_dependencies} #{formatted_libraries}"
         ]
       end
 
