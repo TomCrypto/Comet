@@ -27,7 +27,7 @@ module Comet
 
       def contents
         [
-          "#{target}: #{@dependency.target} #{@native_sources.join ' '} | #{Comet::TMPDIR}",
+          "#{target}: #{@dependency.target} #{@native_sources.join ' '} #{@linker.script_ || ''} | #{Comet::TMPDIR}",
           "\t#{clang_link} #{formatted_script} #{formatted_flags.join ' '} -Wl,-Map=#{map_file} -o $@ $^ #{formatted_libraries}"
         ]
       end

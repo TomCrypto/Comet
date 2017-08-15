@@ -22,7 +22,7 @@ test/linux_x86: .comet/8030c3912f57888f83ad.phony
 	$(COMET_CP) .comet/e542f5d8ea9b413c1db8.elf bin/test_linux_x86.elf
 	$(COMET_CP) .comet/e7b25529bcd9f873ade7.bin bin/test_linux_x64.bin
 	$(COMET_CP) .comet/e542f5d8ea9b413c1db8.map bin/test_linux_x86.map
-.comet/e542f5d8ea9b413c1db8.elf: .comet/ae8d70c4ad166e5f05e6.s  | .comet
+.comet/e542f5d8ea9b413c1db8.elf: .comet/ae8d70c4ad166e5f05e6.s   | .comet
 	$(COMET_LD) --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake   -Wl,-Map=.comet/e542f5d8ea9b413c1db8.map -o $@ $^ 
 .comet/ae8d70c4ad166e5f05e6.s: .comet/1a6fa701e7f59b5130cf.ll | .comet
 	$(COMET_OPT) -S -Ofast --target=x86-unknown-linux-gnu -march=skylake -mcpu=skylake -o $@ $<
@@ -40,7 +40,7 @@ test/linux_x86: .comet/8030c3912f57888f83ad.phony
 .comet/70ed28144e43c7deae81.phony: .comet/9dc94950d9e3e85125d8.elf
 	$(COMET_CP) .comet/9dc94950d9e3e85125d8.elf bin/test_linux_x64.elf
 	$(COMET_CP) .comet/9dc94950d9e3e85125d8.map bin/test_linux_x64.map
-.comet/9dc94950d9e3e85125d8.elf: .comet/c8008c83512b753cc0f5.s  | .comet
+.comet/9dc94950d9e3e85125d8.elf: .comet/c8008c83512b753cc0f5.s   | .comet
 	$(COMET_LD) --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake   -Wl,-Map=.comet/9dc94950d9e3e85125d8.map -o $@ $^ 
 .comet/c8008c83512b753cc0f5.s: .comet/5b532eac405115700e15.ll | .comet
 	$(COMET_OPT) -S -O3 --target=x86_64-unknown-linux-gnu -march=skylake -mcpu=skylake -o $@ $<
