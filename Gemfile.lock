@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    comet (0.1.0)
+    comet-build (0.1.8)
       require_all
       slop
 
@@ -49,7 +49,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.7)
-  comet!
+  comet-build!
   rake (~> 12.0)
   rspec
   rubocop-rspec
